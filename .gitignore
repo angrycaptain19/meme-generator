@@ -1,0 +1,4 @@
+pdftotext
+/static/*
+/tmp/*
+__pycache__/*

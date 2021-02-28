@@ -1,0 +1,8 @@
+{
+  "python.linting.flake8Enabled": false,
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "python.pythonPath": "/opt/anaconda3/envs/env/bin/python",
+  "python.linting.mypyEnabled": false,
+  "python.linting.pycodestyleEnabled": false
+}
