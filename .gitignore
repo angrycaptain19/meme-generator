@@ -3,3 +3,4 @@ pdftotext
 /tmp/*
 __pycache__/
 meme/
+/env/

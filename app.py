@@ -2,6 +2,8 @@ import random
 import os
 import requests
 from flask import Flask, render_template, abort, request
+from requests.exceptions import RequestException
+from requests.sessions import Request
 
 from QuoteEngine.Ingestor import Ingestor
 from MemeEngine.MemeGenerator import MemeGenerator
@@ -56,9 +58,14 @@ def meme_post():
     body = request.form.get('body')
     author = request.form.get('author')
 
-    r = requests.get(image_url, allow_redirects=True)
-    tmp = f'./static/{random.randint(0, 100000000)}.png'
-    open(tmp, 'wb').write(r.content)
+    try:
+        r = requests.get(image_url, allow_redirects=True)
+        tmp = f'./static/{random.randint(0, 100000000)}.png'
+        open(tmp, 'wb').write(r.content)
+    except RequestException:
+        print(
+            f'photo URL, {image_url}, could not be processed.')
+        return render_template('meme_form.html')
 
     path = meme.make_meme(tmp, body, author)
     os.remove(tmp)
