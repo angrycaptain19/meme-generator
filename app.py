@@ -63,12 +63,15 @@ def meme_post():
         tmp = f'./static/{random.randint(0, 100000000)}.png'
         open(tmp, 'wb').write(r.content)
     except RequestException:
-        print(
-            f'photo URL, {image_url}, could not be processed.')
-        return render_template('meme_form.html')
+        print(f'photo URL, {image_url}, could not be processed.')
+        return render_template('error.html')
 
-    path = meme.make_meme(tmp, body, author)
-    os.remove(tmp)
+    try:
+        path = meme.make_meme(tmp, body, author)
+        os.remove(tmp)
+    except FileNotFoundError:
+        print(f'photo URL, {image_url}, could not be processed.')
+        return render_template('error.html')
 
     return render_template('meme.html', path=path)
 

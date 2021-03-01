@@ -2,7 +2,7 @@ import tempfile
 import os
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, UnidentifiedImageError
 
 
 class MemeGenerator:
@@ -44,11 +44,16 @@ class MemeGenerator:
             img = Image.open(in_path)
         except FileNotFoundError:
             raise FileNotFoundError(f'Image file {in_path} does not exit')
+        except UnidentifiedImageError:
+            raise FileNotFoundError(
+                f'Image path, {in_path} cannot be processed')
 
-        if width is not None:
-            ratio = width/float(img.size[0])
-            height = int(ratio*float(img.size[1]))
-            img = img.resize((width, height), Image.NEAREST)
+        if width is None or width > 500:
+            width = 500
+
+        ratio = width/float(img.size[0])
+        height = int(ratio*float(img.size[1]))
+        img = img.resize((width, height), Image.NEAREST)
 
         try:
             _, output_file = tempfile.mkstemp(
