@@ -24,9 +24,8 @@ class DocxIngestor(IngestorInterface):
         try:
             document = Document(path)
             lines = [p.text for p in document.paragraphs]
-            results = [QuoteModel.from_line(line)
+            return [QuoteModel.from_line(line)
                        for line in lines if line != '']
-            return results
         except PackageNotFoundError:
             raise FileNotFoundError(
                 f'File not found or wrong format: {path}')
